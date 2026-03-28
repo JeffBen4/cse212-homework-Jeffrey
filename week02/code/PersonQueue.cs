@@ -1,6 +1,3 @@
-/// <summary>
-/// A basic implementation of a Queue
-/// </summary>
 public class PersonQueue
 {
     private readonly List<Person> _queue = new();
@@ -8,18 +5,29 @@ public class PersonQueue
     public int Length => _queue.Count;
 
     /// <summary>
-    /// Add a person to the queue
+    /// Add a person to the BACK of the queue (FIFO)
     /// </summary>
-    /// <param name="person">The person to add</param>
     public void Enqueue(Person person)
     {
-        _queue.Insert(0, person);
+        // Use Add to put the person at the end of the list
+        _queue.Add(person); 
     }
 
+    /// <summary>
+    /// Remove a person from the FRONT of the queue
+    /// </summary>
     public Person Dequeue()
     {
+        if (IsEmpty())
+        {
+            throw new InvalidOperationException("Queue is empty.");
+        }
+
+        // Get the person at the front (index 0)
         var person = _queue[0];
+        // Remove them from the front
         _queue.RemoveAt(0);
+        
         return person;
     }
 
