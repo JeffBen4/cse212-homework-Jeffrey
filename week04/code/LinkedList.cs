@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic; // Necesario para IEnumerator<int>
+using System.Linq; // Necesario para .Cast<int>()
 
 public class LinkedList : IEnumerable<int>
 {
@@ -30,7 +32,6 @@ public class LinkedList : IEnumerable<int>
     public void InsertTail(int value)
     {
         Node newNode = new(value);
-        // Si la lista está vacía, el nuevo nodo es tanto el head como el tail.
         if (_tail is null)
         {
             _head = newNode;
@@ -38,10 +39,8 @@ public class LinkedList : IEnumerable<int>
         }
         else
         {
-            // Conectamos el nuevo nodo después del tail actual.
             newNode.Prev = _tail;
             _tail.Next = newNode;
-            // El nuevo nodo se convierte en el nuevo tail.
             _tail = newNode;
         }
     }
@@ -68,7 +67,6 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
-        // Si la lista está vacía o tiene un solo elemento.
         if (_head == _tail)
         {
             _head = null;
@@ -76,9 +74,7 @@ public class LinkedList : IEnumerable<int>
         }
         else if (_tail is not null)
         {
-            // El penúltimo nodo ahora no tendrá nada después de él.
             _tail.Prev!.Next = null;
-            // El penúltimo nodo se convierte en el nuevo tail.
             _tail = _tail.Prev;
         }
     }
@@ -121,23 +117,20 @@ public class LinkedList : IEnumerable<int>
         {
             if (curr.Data == value)
             {
-                // Si es el head, usamos la función ya existente.
                 if (curr == _head)
                 {
                     RemoveHead();
                 }
-                // Si es el tail, usamos la función ya existente.
                 else if (curr == _tail)
                 {
                     RemoveTail();
                 }
-                // Si está en el medio, conectamos los nodos de los lados entre sí.
                 else
                 {
                     curr.Prev!.Next = curr.Next;
                     curr.Next!.Prev = curr.Prev;
                 }
-                return; // Solo eliminamos el primero encontrado.
+                return; 
             }
             curr = curr.Next;
         }
@@ -151,12 +144,10 @@ public class LinkedList : IEnumerable<int>
         Node? curr = _head;
         while (curr is not null)
         {
-            // Si coincide, reemplazamos los datos.
             if (curr.Data == oldValue)
             {
                 curr.Data = newValue;
             }
-            // No usamos return porque queremos reemplazar TODOS los que coincidan.
             curr = curr.Next;
         }
     }
@@ -187,12 +178,10 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public IEnumerable<int> Reverse()
     {
-        // Empezamos desde el tail para ir hacia atrás.
         var curr = _tail;
         while (curr is not null)
         {
             yield return curr.Data;
-            // Usamos Prev para movernos hacia el inicio de la lista.
             curr = curr.Prev;
         }
     }
@@ -202,12 +191,12 @@ public class LinkedList : IEnumerable<int>
         return "<LinkedList>{" + string.Join(", ", this) + "}";
     }
 
-    public Boolean HeadAndTailAreNull()
+    public bool HeadAndTailAreNull()
     {
         return _head is null && _tail is null;
     }
 
-    public Boolean HeadAndTailAreNotNull()
+    public bool HeadAndTailAreNotNull()
     {
         return _head is not null && _tail is not null;
     }
@@ -215,6 +204,7 @@ public class LinkedList : IEnumerable<int>
 
 public static class IntArrayExtensionMethods {
     public static string AsString(this IEnumerable array) {
+        // Cast<int> requiere 'using System.Linq;'
         return "<IEnumerable>{" + string.Join(", ", array.Cast<int>()) + "}";
     }
 }
