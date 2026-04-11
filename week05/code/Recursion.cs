@@ -92,7 +92,6 @@ public static class Recursion
                 int newX = x + dx[i];
                 int newY = y + dy[i];
 
-                // CAMBIO AQUÍ: Invertimos el orden para satisfacer a tu compilador
                 if (maze.IsValidMove(currPath, newX, newY))
                 {
                     SolveMaze(results, maze, newX, newY, new List<ValueTuple<int, int>>(currPath));
