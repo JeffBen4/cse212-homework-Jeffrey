@@ -50,11 +50,17 @@ public static class Recursion
 
     public static void WildcardBinary(string pattern, List<string> results)
     {
+        if (string.IsNullOrEmpty(pattern))
+        {
+            if (pattern == "" && !results.Contains("")) results.Add("");
+            return;
+        }
+
         int index = pattern.IndexOf('*');
 
         if (index == -1)
         {
-            results.Add(pattern);
+            if (!results.Contains(pattern)) results.Add(pattern);
             return;
         }
 
@@ -86,7 +92,8 @@ public static class Recursion
                 int newX = x + dx[i];
                 int newY = y + dy[i];
 
-                if (maze.IsValidMove(newX, newY, currPath))
+                // CAMBIO AQUÍ: Invertimos el orden para satisfacer a tu compilador
+                if (maze.IsValidMove(currPath, newX, newY))
                 {
                     SolveMaze(results, maze, newX, newY, new List<ValueTuple<int, int>>(currPath));
                 }
